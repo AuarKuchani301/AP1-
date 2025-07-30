@@ -1,0 +1,90 @@
+#include <stdio.h>
+
+#define SIZE 5
+
+void fuelleMitZeichen(char matrix[SIZE][SIZE], char zeichen) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            matrix[i][j] = zeichen;
+        }
+    }
+}
+
+void fuelleDiagonalenMitNull(char matrix[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        matrix[i][i] = '0';              // Hauptdiagonale
+        matrix[i][SIZE - i - 1] = '0';   // Nebendiagonale
+    }
+}
+
+void zeigeMatrix(char matrix[SIZE][SIZE]) {
+    for (int i = 0; i < SIZE; i++) {
+        for (int j = 0; j < SIZE; j++) {
+            printf("%c ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void setzeFeld(char matrix[SIZE][SIZE], int zeile, int spalte) {
+    if (zeile >= 1 && zeile <= SIZE && spalte >= 1 && spalte <= SIZE) {
+        matrix[zeile - 1][spalte - 1] = '0';
+    } else {
+        printf("Ungültige Eingabe! Bereich ist 1 bis %d.\n", SIZE);
+    }
+}
+
+int main() {
+    char matrix[SIZE][SIZE];
+    int auswahl;
+    int zeile, spalte;
+
+    fuelleMitZeichen(matrix, '+');
+
+    do {
+        printf("\nOptionen:\n");
+        printf("(1) Fülle alle Felder mit 0\n");
+        printf("(2) Fülle die beiden Diagonalen mit 0\n");
+        printf("(3) Fülle ein spezielles Feld mit 0 (Spalte, Zeile)\n");
+        printf("(4) Refresh: Fülle alle Felder wieder mit +\n");
+        printf("(5) Ausgabe der Matrix auf dem Bildschirm\n");
+        printf("(6) Ende des Programms\n");
+        printf("Eingabe: ");
+        scanf("%d", &auswahl);
+
+        switch (auswahl) {
+            case 1:
+                fuelleMitZeichen(matrix, '0');
+                zeigeMatrix(matrix);
+                break;
+            case 2:
+                fuelleMitZeichen(matrix, '+');
+                fuelleDiagonalenMitNull(matrix);
+                zeigeMatrix(matrix);
+                break;
+            case 3:
+                printf("Geben Sie Spalte (1-%d): ", SIZE);
+                scanf("%d", &spalte);
+                printf("Geben Sie Zeile (1-%d): ", SIZE);
+                scanf("%d", &zeile);
+                setzeFeld(matrix, zeile, spalte);
+                zeigeMatrix(matrix);
+                break;
+            case 4:
+                fuelleMitZeichen(matrix, '+');
+                zeigeMatrix(matrix);
+                break;
+            case 5:
+                zeigeMatrix(matrix);
+                break;
+            case 6:
+                printf("Programm wird beendet.\n");
+                break;
+            default:
+                printf("Ungültige Auswahl.\n");
+        }
+
+    } while (auswahl != 6);
+
+    return 0;
+}
